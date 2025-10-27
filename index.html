@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KuyDamShop</title>
+<style>
+body { font-family: Arial, sans-serif; background:#0d1117; color:#eee; margin:0; padding:20px;}
+header{text-align:center; margin-bottom:20px;}
+h1{color:#f92672;}
+.container{max-width:800px; margin:0 auto;}
+input, button{padding:10px; margin:5px 0; width:100%; border-radius:6px; border:none;}
+button{background:#f92672; color:white; cursor:pointer;}
+.card{background:#161b22; padding:20px; border-radius:10px; margin-bottom:15px;}
+.price{font-size:20px;color:#f39c12;margin:10px 0;}
+.hidden{display:none;}
+</style>
+</head>
+<body>
+<header>
+<h1>KuyDamShop</h1>
+<p>ขายรหัส Roblox 9 บาท</p>
+</header>
+
+<div class="container">
+  <div id="loginDiv">
+    <h2>Login</h2>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+  </div>
+
+  <div id="shopDiv" class="hidden">
+    <h2>ร้านค้า</h2>
+    <div class="products" id="products"></div>
+    <button onclick="logout()">Logout</button>
+  </div>
+</div>
+
+<script>
+// รหัสจำลองสำหรับ Login
+const USER = { username: 'admin', password: '1234' };
+
+// รหัสสินค้า
+let codes = [
+  {sku:'ROBLOX-001', code:'RBX-001-ABC', price:9},
+  {sku:'ROBLOX-002', code:'RBX-002-DEF', price:9},
+  {sku:'ROBLOX-003', code:'RBX-003-GHI', price:9}
+];
+
+// ฟังก์ชัน Login
+function login() {
+  const user = document.getElementById('username').value;
+  const pass = document.getElementById('password').value;
+  if(user === USER.username && pass === USER.password){
+    document.getElementById('loginDiv').classList.add('hidden');
+    document.getElementById('shopDiv').classList.remove('hidden');
+    renderShop();
+  } else {
+    alert('Username หรือ Password ไม่ถูกต้อง!');
+  }
+}
+
+// ฟังก์ชัน Logout
+function logout(){
+  document.getElementById('loginDiv').classList.remove('hidden');
+  document.getElementById('shopDiv').classList.add('hidden');
+}
+
+// แสดงสินค้าร้านค้า
+function renderShop() {
+  const productsDiv = document.getElementById('products');
+  productsDiv.innerHTML = '';
+  codes.forEach((item, index)=>{
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `<h3>${item.sku}</h3>
+      <div class="price">${item.price} บาท</div>
+      <button onclick="buy(${index})">ซื้อเลย</button>`;
+    productsDiv.appendChild(card);
+  });
+}
+
+// ซื้อสินค้า
+function buy(index){
+  const item = codes[index];
+  alert('ขอบคุณที่ซื้อ! รหัสของคุณ: ' + item.code);
+  codes.splice(index,1); // ลบรหัสหลังขาย
+  renderShop();
+}
+</script>
+</body>
+</html>
